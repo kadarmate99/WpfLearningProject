@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:WiredBrainCoffee.CustomersApp.Controls"
              mc:Ignorable="d" 
              HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid Background="#F05A28">
+    <Grid Background="{StaticResource HeaderBackgroundBrush}">
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
             <Image Source="/Images/logo.png" Width="100" Margin="5"
                    d:Source="pack://application:,,,/Images/logo.png"/>
@@ -14,7 +14,7 @@
                          d:Source uses Pack URI format to ensure image loads properly in Visual Studio designer.
                          Pack URI explicitly tells designer to look in current application assembly. -->
             <TextBlock Text="Customers App" FontSize="30"
-               Foreground="White" VerticalAlignment="Center"/>
+               Foreground="{StaticResource HeaderForgroundBrush}"/>
             <TextBlock Text="Version 1.0" FontSize="16"
                Foreground="#333333" VerticalAlignment="Bottom"
                Margin="10 0 0 22"/>
