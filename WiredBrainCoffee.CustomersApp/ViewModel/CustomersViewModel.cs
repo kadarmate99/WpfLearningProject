@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using WiredBrainCoffee.CustomersApp.Command;
 using WiredBrainCoffee.CustomersApp.Data;
 using WiredBrainCoffee.CustomersApp.Model;
@@ -8,23 +10,32 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
     public class CustomersViewModel : ViewModelBase
     {
         private readonly ICustomerDataProvider _customerDataProvider;
-
         private CustomerItemViewModel? _selectedCustomer;
         private NavigationSide _navigationSide;
 
+        public CustomersViewModel(ICustomerDataProvider customerDataProvider)
+        {
+            _customerDataProvider = customerDataProvider;
+            AddCommand = new DelegateCommand(Add);
+            MoveNavigationCommand = new DelegateCommand(MoveNavigation);
+            DeleteCommand = new DelegateCommand(Delete, CanDelete);
+        }
+
         public ObservableCollection<CustomerItemViewModel> Customers { get; } = new();
-        public CustomerItemViewModel? SelectedCustomer {
+
+        public CustomerItemViewModel? SelectedCustomer
+        {
             get => _selectedCustomer;
-            set 
-            { 
+            set
+            {
                 _selectedCustomer = value;
                 RaisePropertyChanged();
-                DeleteCommand.RaiseCanExecuteChanged();
                 RaisePropertyChanged(nameof(IsCustomerSelected));
+                DeleteCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public bool IsCustomerSelected  => SelectedCustomer is not null;
+        public bool IsCustomerSelected => SelectedCustomer is not null;
 
         public NavigationSide NavigationSide
         {
@@ -42,17 +53,9 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
 
         public DelegateCommand DeleteCommand { get; }
 
-        public CustomersViewModel(ICustomerDataProvider customerDataProvider)
+        public async override Task LoadAsync()
         {
-            _customerDataProvider = customerDataProvider;
-            AddCommand = new DelegateCommand(Add);
-            MoveNavigationCommand = new DelegateCommand(MoveNavigation);
-            DeleteCommand = new DelegateCommand(Delete, CanDelete);
-        }
-
-        public async Task LoadAsync()
-        {
-            if(Customers.Any())
+            if (Customers.Any())
             {
                 return;
             }
@@ -77,21 +80,21 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
 
         private void MoveNavigation(object? parameter)
         {
-            NavigationSide = NavigationSide == NavigationSide.Left ?
-                NavigationSide.Right :
-                NavigationSide.Left;
+            NavigationSide = NavigationSide == NavigationSide.Left
+              ? NavigationSide.Right
+              : NavigationSide.Left;
         }
-
-        private bool CanDelete(object? parameter) => SelectedCustomer is not null;
 
         private void Delete(object? parameter)
         {
-            if(SelectedCustomer is not null)
+            if (SelectedCustomer is not null)
             {
                 Customers.Remove(SelectedCustomer);
                 SelectedCustomer = null;
-            }    
+            }
         }
+
+        private bool CanDelete(object? parameter) => SelectedCustomer is not null;
     }
 
     public enum NavigationSide
@@ -99,5 +102,4 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
         Left,
         Right
     }
-
 }

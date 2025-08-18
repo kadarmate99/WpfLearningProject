@@ -5,19 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WiredBrainCoffee.CustomersApp.Controls"
              mc:Ignorable="d" 
-             HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-    <Grid Background="{StaticResource HeaderBackgroundBrush}">
-        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-            <Image Source="/Images/logo.png" Width="100" Margin="5"
-                   d:Source="pack://application:,,,/Images/logo.png"/>
-                    <!-- The designer sometimes fails to resolve relative paths like "/Images/logo.png" 
-                         d:Source uses Pack URI format to ensure image loads properly in Visual Studio designer.
-                         Pack URI explicitly tells designer to look in current application assembly. -->
-            <TextBlock Text="Customers App" FontSize="30"
-               Foreground="{StaticResource HeaderForgroundBrush}"/>
-            <TextBlock Text="Version 1.0" FontSize="16"
-               Foreground="#333333" VerticalAlignment="Bottom"
-               Margin="10 0 0 22"/>
-        </StackPanel>
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="800">
+  <Grid Background="{StaticResource HeaderBackgroundBrush}">
+    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+      <Image Source="/Images/logo.png" Width="100" Margin="5"/>
+      <TextBlock Text="Customers App" FontSize="30" 
+                 Foreground="{StaticResource HeaderForegroundBrush}" VerticalAlignment="Center"/>
+      <TextBlock Text="Version 1.0" FontSize="16"
+                 Foreground="#333333" VerticalAlignment="Bottom" Margin="10 0 0 22"/>
+    </StackPanel>
+  </Grid>
 </UserControl>
