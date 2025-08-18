@@ -5,10 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WiredBrainCoffee.CustomersApp.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="200" d:DesignWidth="300">
     <Grid>
-        <TextBlock Text="Products"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
+        <!--When WPF creates the ProductsView through the DataTemplate, it automatically sets the DataContext 
+        of the ProductsView to be the ProductsViewModel instance that triggered the template.
+        
+        This means that when your ProductsView does {Binding Products}, 
+        it's binding to the Products property on the ProductsViewModel that WPF automatically assigned as the DataContext.-->
+        <DataGrid ItemsSource="{Binding Products}"
+                  Margin="10" IsReadOnly="True"/>
     </Grid>
 </UserControl>
