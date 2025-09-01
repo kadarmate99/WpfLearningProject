@@ -11,6 +11,8 @@
     <None Remove="Images\add.png" />
     <None Remove="Images\logo.png" />
     <None Remove="Images\move.png" />
+    <None Remove="Images\revert.png" />
+    <None Remove="Images\save.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +23,8 @@
     <Resource Include="Images\add.png" />
     <Resource Include="Images\logo.png" />
     <Resource Include="Images\move.png" />
+    <Resource Include="Images\revert.png" />
+    <Resource Include="Images\save.png" />
   </ItemGroup>
 
 </Project>

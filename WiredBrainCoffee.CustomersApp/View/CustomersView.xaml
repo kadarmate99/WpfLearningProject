@@ -53,20 +53,47 @@
         </Grid>
 
         <!-- Customer detail -->
-        <StackPanel Grid.Column="1" Margin="10"
-                Visibility="{Binding IsCustomerSelected,
+        <Grid Grid.Column="1" 
+              Margin="10"
+              Visibility="{Binding IsCustomerSelected,
                 Converter={StaticResource BooleanToVisibilityConv}}">
-            <Label>Firstname:</Label>
-            <TextBox Text="{Binding SelectedCustomer.FirstName,
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <Label>Firstname:</Label>
+                <TextBox Text="{Binding CurrentCustomerEdit.FirstName,
                 Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-            <Label>Lastname:</Label>
-            <TextBox Text="{Binding SelectedCustomer.LastName,
+                <Label>Lastname:</Label>
+                <TextBox Text="{Binding CurrentCustomerEdit.LastName,
                 Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-            <CheckBox IsChecked="{Binding SelectedCustomer.IsDeveloper,
+                <CheckBox IsChecked="{Binding CurrentCustomerEdit.IsDeveloper,
                 Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                 Margin="0 20 0 0">
-                Is developer
-            </CheckBox>
-        </StackPanel>
+                    Is developer
+                </CheckBox>
+            </StackPanel>
+            <StackPanel  Grid.Row="2"
+                         Orientation="Horizontal"
+                         HorizontalAlignment="Center">
+                <Button Width="100"
+                        Command="{Binding RevertCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Images/revert.png" Height="18" Margin="0 0 5 0"/>
+                        <TextBlock Text="Revert"/>
+                    </StackPanel>
+                </Button>
+                <Button Width="100"
+                        Margin="10 0 0 0"
+                        Command="{Binding SaveCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/Images/save.png" Height="18" Margin="0 0 5 0"/>
+                        <TextBlock Text="Save"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
