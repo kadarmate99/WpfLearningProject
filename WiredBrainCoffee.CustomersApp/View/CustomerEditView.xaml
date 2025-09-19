@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="WiredBrainCoffee.CustomersApp.View.CustomerEditView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WiredBrainCoffee.CustomersApp.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="400" d:FontSize="18">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Edit Form - Direct binding to the CustomerItemViewModel -->
+        <StackPanel>
+            <Label>Firstname:</Label>
+            <TextBox Text="{Binding EditedFirstName,
+                Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            <Label>Lastname:</Label>
+            <TextBox Text="{Binding EditedLastName,
+                Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            <CheckBox IsChecked="{Binding EditedIsDeveloper,
+                Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                Margin="0 20 0 0">
+                Is developer
+            </CheckBox>
+        </StackPanel>
+
+        <!-- Buttons -->
+        <StackPanel  Grid.Row="2"
+                         Orientation="Horizontal"
+                         HorizontalAlignment="Center">
+            <Button Width="180"
+                        Command="{Binding DiscardChangesCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Images/discardChanges.png" Height="18" Margin="0 0 5 0"/>
+                    <TextBlock Text="Discard Changes"/>
+                </StackPanel>
+            </Button>
+            <Button Width="180"
+                        Margin="10 0 0 0"
+                        Command="{Binding ApplyChangesCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Images/applyChanges.png" Height="18" Margin="0 0 5 0"/>
+                    <TextBlock Text="Apply Changes"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

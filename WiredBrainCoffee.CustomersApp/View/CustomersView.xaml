@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:WiredBrainCoffee.CustomersApp.View" 
              xmlns:converter="clr-namespace:WiredBrainCoffee.CustomersApp.Converter"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="500" d:FontSize="16">
+             d:DesignHeight="250" d:DesignWidth="700" d:FontSize="18">
     <UserControl.Resources>
         <converter:NavigationSideToGridColumnConverter 
       x:Key="NavigationSideToGridColumnConv"/>
@@ -52,48 +52,10 @@
                 Grid.Row="1" Margin="10 0 10 10"/>
         </Grid>
 
-        <!-- Customer detail -->
-        <Grid Grid.Column="1" 
-              Margin="10"
-              Visibility="{Binding IsCustomerSelected,
-                Converter={StaticResource BooleanToVisibilityConv}}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <StackPanel>
-                <Label>Firstname:</Label>
-                <TextBox Text="{Binding CurrentCustomerEdit.FirstName,
-                Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                <Label>Lastname:</Label>
-                <TextBox Text="{Binding CurrentCustomerEdit.LastName,
-                Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                <CheckBox IsChecked="{Binding CurrentCustomerEdit.IsDeveloper,
-                Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                Margin="0 20 0 0">
-                    Is developer
-                </CheckBox>
-            </StackPanel>
-            <StackPanel  Grid.Row="2"
-                         Orientation="Horizontal"
-                         HorizontalAlignment="Center">
-                <Button Width="100"
-                        Command="{Binding RevertCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Images/revert.png" Height="18" Margin="0 0 5 0"/>
-                        <TextBlock Text="Revert"/>
-                    </StackPanel>
-                </Button>
-                <Button Width="100"
-                        Margin="10 0 0 0"
-                        Command="{Binding SaveCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Images/save.png" Height="18" Margin="0 0 5 0"/>
-                        <TextBlock Text="Save"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </Grid>
+        <!-- Customer Detail Editing -->
+        <local:CustomerEditView Grid.Column="1"
+                        DataContext="{Binding SelectedCustomer}"
+                        Visibility="{Binding IsCustomerSelected,
+                          Converter={StaticResource BooleanToVisibilityConv}}"/>
     </Grid>
 </UserControl>
