@@ -8,10 +8,10 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
     public class CustomerItemViewModel : ValidationViewModelBase
     {
         private readonly Customer _originalModel;
-        private readonly ICustomerRepository _repository;
+        private readonly IRepository<Customer> _repository;
         private readonly Customer _editedModel;
 
-        public CustomerItemViewModel(Customer model, ICustomerRepository repository)
+        public CustomerItemViewModel(Customer model, IRepository<Customer> repository)
         {
             _originalModel = model;
             _repository = repository;

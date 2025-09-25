@@ -8,7 +8,7 @@ using WiredBrainCoffee.CustomersApp.Model;
 
 namespace WiredBrainCoffee.CustomersApp.Repository
 {
-    public class CustomerJsonRepository : ICustomerRepository
+    public class CustomerJsonRepository : IRepository<Customer>
     {
         private readonly string filePath = Path.Combine(AppContext.BaseDirectory, "people.json");
         private readonly JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };

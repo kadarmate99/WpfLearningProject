@@ -8,9 +8,9 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
 {
     public class ProductsViewModel : ViewModelBase
     {
-        private readonly IProductRepository _productDataProvider;
+        private readonly IRepository<Product> _productDataProvider;
 
-        public ProductsViewModel(IProductRepository productDataProvider)
+        public ProductsViewModel(IRepository<Product> productDataProvider)
         {
             _productDataProvider = productDataProvider;
         }

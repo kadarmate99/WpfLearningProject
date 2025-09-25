@@ -10,12 +10,12 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
 {
     public class CustomersViewModel : ValidationViewModelBase
     {
-        private readonly ICustomerRepository _repository;
+        private readonly IRepository<Customer> _repository;
         private CustomerItemViewModel? _selectedCustomer;
         private NavigationSide _navigationSide;
         private string? _customerFirstNameEdit;
 
-        public CustomersViewModel(ICustomerRepository repository)
+        public CustomersViewModel(IRepository<Customer> repository)
         {
             _repository = repository;
             AddCommand = new DelegateCommand(Add);
