@@ -14,6 +14,9 @@ namespace WiredBrainCoffee.CustomersApp.Repository
 
         public IEnumerable<Product> GetAll()
         {
+            if (!File.Exists(filePath))
+                return Enumerable.Empty<Product>();
+
             string fileContent = File.ReadAllText(filePath);
             var products = JsonSerializer.Deserialize<IEnumerable<Product>>(fileContent) ?? Enumerable.Empty<Product>();
             return products;
