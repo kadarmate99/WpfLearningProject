@@ -1,17 +1,20 @@
 ﻿using System.Reflection.Metadata;
 using WiredBrainCoffee.CustomersApp.Command;
 using WiredBrainCoffee.CustomersApp.Model;
+using WiredBrainCoffee.CustomersApp.Repository;
 
 namespace WiredBrainCoffee.CustomersApp.ViewModel
 {
     public class CustomerItemViewModel : ValidationViewModelBase
     {
         private readonly Customer _originalModel;
+        private readonly ICustomerRepository _repository;
         private readonly Customer _editedModel;
 
-        public CustomerItemViewModel(Customer model)
+        public CustomerItemViewModel(Customer model, ICustomerRepository repository)
         {
             _originalModel = model;
+            _repository = repository;
             _editedModel = new Customer
             {
                 Id = model.Id,
@@ -24,6 +27,10 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
             DiscardChangesCommand = new DelegateCommand(DiscardChanges);
 
         }
+        /// <summary> 
+        /// Gets the data object backing this view model.
+        /// </summary>
+        public Customer OriginalCustomer => _originalModel;
 
         public DelegateCommand ApplyChangesCommand { get; }
         public DelegateCommand DiscardChangesCommand { get; }
@@ -31,30 +38,30 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
         #region Display Properties for ListView, only valid data should be set with apply chnages method
         public string? FirstName
         {
-            get => _originalModel.FirstName;
+            get => OriginalCustomer.FirstName;
             private set 
             {
-                _originalModel.FirstName = value;
+                OriginalCustomer.FirstName = value;
                 RaisePropertyChanged();
 
             }
         } 
         public string? LastName
         {
-            get => _originalModel.LastName;
+            get => OriginalCustomer.LastName;
             private set
             {
-                _originalModel.LastName = value;
+                OriginalCustomer.LastName = value;
                 RaisePropertyChanged();
 
             }
         }
         public bool IsDeveloper 
         { 
-            get => _originalModel.IsDeveloper;
+            get => OriginalCustomer.IsDeveloper;
             private set
             {
-                _originalModel.IsDeveloper = value;
+                OriginalCustomer.IsDeveloper = value;
                 RaisePropertyChanged();
             }
         }
@@ -76,7 +83,6 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
                 ApplyChangesCommand.RaiseCanExecuteChanged();
             }
         }
-
         public string? EditedLastName
         {
             get => _editedModel.LastName;
@@ -92,7 +98,6 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
                 ApplyChangesCommand.RaiseCanExecuteChanged();
             }
         }
-
         public bool EditedIsDeveloper
         {
             get => _editedModel.IsDeveloper;
@@ -113,6 +118,8 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
             FirstName = EditedFirstName;
             LastName = EditedLastName;
             IsDeveloper = EditedIsDeveloper;
+
+            _repository.Update(OriginalCustomer);
         }
 
         private void DiscardChanges(object? parameter)

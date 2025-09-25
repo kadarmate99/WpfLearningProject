@@ -33,18 +33,18 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
 
         public DelegateCommand SelectViewModelCommand { get; }
 
-        public async override Task LoadAsync()
+        public override void Load()
         {
             if (SelectedViewModel is not null)
             {
-                await SelectedViewModel.LoadAsync();
+                SelectedViewModel.Load();
             }
         }
 
-        private async void SelectViewModel(object? parameter)
+        private void SelectViewModel(object? parameter)
         {
             SelectedViewModel = parameter as ViewModelBase;
-            await LoadAsync();
+            Load();
         }
     }
 }

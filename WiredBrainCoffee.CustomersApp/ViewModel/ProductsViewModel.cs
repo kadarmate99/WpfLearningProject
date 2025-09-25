@@ -1,16 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using WiredBrainCoffee.CustomersApp.Data;
 using WiredBrainCoffee.CustomersApp.Model;
+using WiredBrainCoffee.CustomersApp.Repository;
 
 namespace WiredBrainCoffee.CustomersApp.ViewModel
 {
     public class ProductsViewModel : ViewModelBase
     {
-        private readonly IProductDataProvider _productDataProvider;
+        private readonly IProductRepository _productDataProvider;
 
-        public ProductsViewModel(IProductDataProvider productDataProvider)
+        public ProductsViewModel(IProductRepository productDataProvider)
         {
             _productDataProvider = productDataProvider;
         }
@@ -19,14 +19,14 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
         // but because this will be just a read only screen we can use the Product class as well
         public ObservableCollection<Product> Products { get; } = new();
 
-        public override async Task LoadAsync()
+        public override void Load()
         {
             if (Products.Any())
             {
                 return;
             }
 
-            var products = await _productDataProvider.GetAllAsync();
+            var products = _productDataProvider.GetAll();
             if (products is not null)
             {
                 foreach (var product in products)

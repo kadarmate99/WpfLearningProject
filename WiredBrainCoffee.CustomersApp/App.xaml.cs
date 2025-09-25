@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
-using WiredBrainCoffee.CustomersApp.Data;
+using WiredBrainCoffee.CustomersApp.Repository;
 using WiredBrainCoffee.CustomersApp.ViewModel;
 
 namespace WiredBrainCoffee.CustomersApp
@@ -25,8 +25,8 @@ namespace WiredBrainCoffee.CustomersApp
             services.AddTransient<CustomersViewModel>();
             services.AddTransient<ProductsViewModel>();
 
-            services.AddTransient<ICustomerDataProvider, CustomerDataProvider>();
-            services.AddTransient<IProductDataProvider, ProductDataProvider>();
+            services.AddTransient<ICustomerRepository, CustomerJsonRepository>();
+            services.AddTransient<IProductRepository, ProductJsonRepository>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

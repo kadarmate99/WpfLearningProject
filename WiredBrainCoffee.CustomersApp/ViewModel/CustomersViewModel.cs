@@ -3,21 +3,21 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using WiredBrainCoffee.CustomersApp.Command;
-using WiredBrainCoffee.CustomersApp.Data;
 using WiredBrainCoffee.CustomersApp.Model;
+using WiredBrainCoffee.CustomersApp.Repository;
 
 namespace WiredBrainCoffee.CustomersApp.ViewModel
 {
     public class CustomersViewModel : ValidationViewModelBase
     {
-        private readonly ICustomerDataProvider _customerDataProvider;
+        private readonly ICustomerRepository _repository;
         private CustomerItemViewModel? _selectedCustomer;
         private NavigationSide _navigationSide;
         private string? _customerFirstNameEdit;
 
-        public CustomersViewModel(ICustomerDataProvider customerDataProvider)
+        public CustomersViewModel(ICustomerRepository repository)
         {
-            _customerDataProvider = customerDataProvider;
+            _repository = repository;
             AddCommand = new DelegateCommand(Add);
             MoveNavigationCommand = new DelegateCommand(MoveNavigation);
             DeleteCommand = new DelegateCommand(Delete, CanDelete);
@@ -56,21 +56,22 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
 
         public DelegateCommand DeleteCommand { get; }
 
-        public async override Task LoadAsync()
+        public override void Load()
         {
             if (Customers.Any())
             {
                 return;
             }
 
-            var customers = await _customerDataProvider.GetAllAsync();
+            var customers = _repository.GetAll();
             if (customers is not null)
             {
                 foreach (var customer in customers)
                 {
-                    Customers.Add(new CustomerItemViewModel(customer));
+                    Customers.Add(new CustomerItemViewModel(customer, _repository));
                 }
             }
+
         }
 
         private void Add(object? parameter)
@@ -81,7 +82,8 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
                 LastName = "New",
                 IsDeveloper = false
             };
-            var viewModel = new CustomerItemViewModel(customer);
+            var viewModel = new CustomerItemViewModel(customer, _repository);
+            _repository.Add(customer);
 
             Customers.Add(viewModel);
             SelectedCustomer = viewModel;
@@ -98,7 +100,9 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
         {
             if (SelectedCustomer is not null)
             {
+                _repository.Delete(SelectedCustomer.OriginalCustomer);
                 Customers.Remove(SelectedCustomer);
+
                 SelectedCustomer = null;
             }
         }
