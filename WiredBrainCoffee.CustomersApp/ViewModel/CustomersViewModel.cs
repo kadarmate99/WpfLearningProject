@@ -68,6 +68,9 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
             {
                 foreach (var customer in customers)
                 {
+                    // DIRECT INSTANTIATION: Generally bad (violates DIP, hard to test, tight coupling)
+                    // ACCEPTABLE HERE: Simple view model in same layer, natural parent-child relationship,
+                    // no complex logic to mock.
                     Customers.Add(new CustomerItemViewModel(customer, _repository));
                 }
             }
@@ -76,12 +79,15 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
 
         private void Add(object? parameter)
         {
+            // Instantiation of Customer model is acceptable - it's just a data structure (DTO)
             var customer = new Customer
             {
                 FirstName = "New",
                 LastName = "New",
                 IsDeveloper = false
             };
+
+            // Same DI considerations as in Load() - acceptable for simple view model hierarchy
             var viewModel = new CustomerItemViewModel(customer, _repository);
             _repository.Add(customer);
 
