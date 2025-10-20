@@ -32,20 +32,21 @@ namespace WiredBrainCoffee.CustomersApp.Repository
             return products;
         }
 
-        public void SaveAll(IEnumerable<Product> products)
+        public IEnumerable<Product> SaveAll(IEnumerable<Product> products)
         {
             string json = JsonSerializer.Serialize(products, _jsonOptions);
             File.WriteAllText(_productsFilePath, json);
+            return GetAll();
         }
 
-        public void Add(Product product)
+        public IEnumerable<Product> Add(Product product)
         {
             var products = GetAll().ToList();
             products.Add(product);
-            SaveAll(products);
+            return SaveAll(products);
         }
 
-        public void Delete(Product product)
+        public IEnumerable<Product> Delete(Product product)
         {
             var products = GetAll().ToList();
             var existingCustomer = products.FirstOrDefault(p => p.Name == product.Name);
@@ -55,11 +56,11 @@ namespace WiredBrainCoffee.CustomersApp.Repository
 
             products.Remove(existingCustomer);
 
-            SaveAll(products);
+            return SaveAll(products);
         }
 
 
-        public void Update(Product product)
+        public IEnumerable<Product> Update(Product product)
         {
             var products = GetAll().ToList();
             var existingCustomer = products.FirstOrDefault(p => p.Name == product.Name);
@@ -69,7 +70,7 @@ namespace WiredBrainCoffee.CustomersApp.Repository
 
             existingCustomer.Description = product.Description;
 
-            SaveAll(products);
+            return SaveAll(products);
         }
     }
 }

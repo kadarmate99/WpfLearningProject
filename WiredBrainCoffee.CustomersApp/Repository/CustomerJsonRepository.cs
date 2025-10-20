@@ -42,13 +42,14 @@ namespace WiredBrainCoffee.CustomersApp.Repository
             return customers;
         }
 
-        public void SaveAll(IEnumerable<Customer> customers)
+        public IEnumerable<Customer> SaveAll(IEnumerable<Customer> customers)
         {
             string json = JsonSerializer.Serialize(customers, _jsonOptions);
             File.WriteAllText(_customersFilePath, json);
+            return GetAll();
         }
 
-        public void Add(Customer customer)
+        public IEnumerable<Customer> Add(Customer customer)
         {
             var customers = GetAll().ToList();
 
@@ -56,10 +57,10 @@ namespace WiredBrainCoffee.CustomersApp.Repository
             customer.Id = newId;
             customers.Add(customer);
 
-            SaveAll(customers);
+            return SaveAll(customers);
         }
 
-        public void Delete(Customer customer)
+        public IEnumerable<Customer> Delete(Customer customer)
         {
             // Replaced original delete method that used ToList() + FirstOrDefault() + Remove(), which:
             // 1) Loaded the entire collection into memory
@@ -70,27 +71,31 @@ namespace WiredBrainCoffee.CustomersApp.Repository
             // ToList() would execute "SELECT * FROM Customers" pulling ALL records across the network into app memory,
             // while this keeps operations at DB level using optimized EXISTS and filtered SELECT queries.
             var customers = GetAll();
-            if (!customers.Any(x => x.Id == customer.Id))
-            {
-                throw new InvalidOperationException();
-            }
+            if (!customers.Any())
+                throw new InvalidOperationException($"File not found or empty: {_customersFilePath}");
 
-            SaveAll(customers.Where(c => c.Id != customer.Id));
+            if (!customers.Any(x => x == customer))
+                throw new InvalidOperationException($"The specified customer ({customer.FirstName} {customer.LastName}, ID {customer.Id}) does not exist.");
+
+            return SaveAll(customers.Where(c => c != customer));
         }
 
-        public void Update(Customer customer)
+        public IEnumerable<Customer> Update(Customer customer)
         {
-            var customers = GetAll().ToList();
-            var existingCustomer = customers.FirstOrDefault(c => c.Id == customer.Id);
+            var customers = GetAll();
+            if (!customers.Any())
+                throw new InvalidOperationException($"File not found or empty: {_customersFilePath}");
 
+            var existingCustomer = customers.FirstOrDefault(c => c.Id == customer.Id);
             if (existingCustomer is null)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"The specified customer ({customer.FirstName} {customer.LastName}, ID {customer.Id}) does not exist.");
+
 
             existingCustomer.FirstName = customer.FirstName;
             existingCustomer.LastName = customer.LastName;
             existingCustomer.IsDeveloper = customer.IsDeveloper;
 
-            SaveAll(customers);
+            return SaveAll(customers);
         }
     }
 }

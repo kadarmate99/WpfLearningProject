@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WiredBrainCoffee.CustomersApp.Model;
+﻿using System.Collections.Generic;
 
 namespace WiredBrainCoffee.CustomersApp.Repository
 {
     public interface IRepository<TModel> where TModel : class
     {
         IEnumerable<TModel> GetAll();
-        void SaveAll(IEnumerable<TModel> model);
-        void Add(TModel model);
-        void Update(TModel model);
-        void Delete(TModel model);
+        IEnumerable<TModel> SaveAll(IEnumerable<TModel> model);
+        IEnumerable<TModel> Add(TModel model);
+        IEnumerable<TModel> Update(TModel model);
+        IEnumerable<TModel> Delete(TModel model);
     }
 }

@@ -1,19 +1,19 @@
-﻿using System.Text.Json.Serialization;
+﻿    using System.Text.Json.Serialization;
 
-namespace WiredBrainCoffee.CustomersApp.Model
-{
-    public record Customer
+    namespace WiredBrainCoffee.CustomersApp.Model
     {
-        [JsonRequired]
-        public int Id { get; set; }
+        public record Customer
+        {
+            [JsonRequired]
+            public int Id { get; set; }
 
-        [JsonRequired]
-        public string FirstName { get; set; } = default!;
+            [JsonRequired]
+            public string FirstName { get; set; } = default!;
 
-        [JsonRequired]
-        public string LastName { get; set; } = default!;
+            [JsonRequired]
+            public string LastName { get; set; } = default!;
 
-        [JsonRequired]
-        public bool IsDeveloper { get; set; }
+            [JsonRequired]
+            public bool IsDeveloper { get; set; }
+        }
     }
-}
