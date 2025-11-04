@@ -13,7 +13,6 @@ namespace WiredBrainCoffee.CustomersApp.ViewModel
         private readonly IRepository<Customer> _repository;
         private CustomerItemViewModel? _selectedCustomer;
         private NavigationSide _navigationSide;
-        private string? _customerFirstNameEdit;
 
         public CustomersViewModel(IRepository<Customer> repository)
         {

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Text.Json;
 using WiredBrainCoffee.CustomersApp.Configuration;
@@ -32,13 +31,6 @@ namespace WiredBrainCoffee.CustomersApp.Repository
             return products;
         }
 
-        public IEnumerable<Product> SaveAll(IEnumerable<Product> products)
-        {
-            string json = JsonSerializer.Serialize(products, _jsonOptions);
-            File.WriteAllText(_productsFilePath, json);
-            return GetAll();
-        }
-
         public IEnumerable<Product> Add(Product product)
         {
             var products = GetAll().ToList();
@@ -66,11 +58,18 @@ namespace WiredBrainCoffee.CustomersApp.Repository
             var existingCustomer = products.FirstOrDefault(p => p.Name == product.Name);
 
             if (existingCustomer is null)
-                throw new InvalidOperationException();
+                throw new InvalidOperationException($"The specified product ({product.Name}, ID {product.Id}) does not exist.");
 
             existingCustomer.Description = product.Description;
 
             return SaveAll(products);
+        }
+
+        private IEnumerable<Product> SaveAll(IEnumerable<Product> products)
+        {
+            string json = JsonSerializer.Serialize(products, _jsonOptions);
+            File.WriteAllText(_productsFilePath, json);
+            return GetAll();
         }
     }
 }

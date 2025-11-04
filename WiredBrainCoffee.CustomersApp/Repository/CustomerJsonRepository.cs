@@ -42,13 +42,6 @@ namespace WiredBrainCoffee.CustomersApp.Repository
             return customers;
         }
 
-        public IEnumerable<Customer> SaveAll(IEnumerable<Customer> customers)
-        {
-            string json = JsonSerializer.Serialize(customers, _jsonOptions);
-            File.WriteAllText(_customersFilePath, json);
-            return GetAll();
-        }
-
         public IEnumerable<Customer> Add(Customer customer)
         {
             var customers = GetAll().ToList();
@@ -96,6 +89,12 @@ namespace WiredBrainCoffee.CustomersApp.Repository
             existingCustomer.IsDeveloper = customer.IsDeveloper;
 
             return SaveAll(customers);
+        }
+        public IEnumerable<Customer> SaveAll(IEnumerable<Customer> customers)
+        {
+            string json = JsonSerializer.Serialize(customers, _jsonOptions);
+            File.WriteAllText(_customersFilePath, json);
+            return GetAll();
         }
     }
 }
